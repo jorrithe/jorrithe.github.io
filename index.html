@@ -67,7 +67,7 @@
             <button onclick="resetTimer()">Zurücksetzen</button>
         </div>
         <div>
-            Geschwindigkeit:
+            Verbleibende Teilnehmer:
             <button id="speed0" onclick="changeSpeed(0)">0</button>
             <button id="speed1" onclick="changeSpeed(1)">1</button>
             <button id="speed2" onclick="changeSpeed(2)">2</button>
@@ -103,7 +103,7 @@
 
                 if (remainingTime <= 0) {
                     resetTimer();
-                    document.getElementById("timer").innerText = "Zeit abgelaufen! Timer pausiert.";
+                    document.getElementById("timer").innerText = "Zeit abgelaufen!.";
                 } else {
                     document.getElementById("timer").innerText = `${remainingTime.toFixed(2)} Sekunden`;
                 }
