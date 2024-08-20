@@ -1,58 +1,136 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="de">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Live Timer</title>
+    <title>Timer</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            text-align: center;
-            margin-top: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #282c34;
+            color: white;
+            flex-direction: column;
         }
 
-        #time-display {
-            font-size: 2em;
+        #timer {
+            font-size: 48px;
             margin-bottom: 20px;
         }
 
+        #controls {
+            font-size: 24px;
+        }
+
         button {
+            margin: 0 10px;
             padding: 10px 20px;
-            font-size: 1em;
-            margin: 5px;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        button:focus {
+            outline: none;
         }
     </style>
 </head>
 <body>
-    <div>
-        <h1 id="time-display">Remaining Time: 60 seconds</h1>
-        <button onclick="addPerson()">Add Person</button>
-        <button onclick="removePerson()">Remove Person</button>
-        <p>Number of People: <span id="people-count">1</span></p>
+    <div id="timer">10.00 Sekunden</div>
+    <div id="controls">
+        <button onclick="pauseTimer()">Pause (P)</button>
+        <button onclick="resumeTimer()">Fortsetzen (F)</button>
+        <button onclick="resetTimer()">Zurücksetzen (R)</button>
+        <label for="speed">Geschwindigkeit: </label>
+        <select id="speed" onchange="changeSpeed(this.value)">
+            <option value="0">0</option>
+            <option value="1" selected>1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+        </select>
     </div>
 
-    <script>let totalTime = 60; // Total time in seconds
-        let peopleCount = 1;
+    <script>
+        let duration = 10.0;  // Dauer des Timers in Sekunden
+        let remainingTime = duration;
+        let accumulatedTime = 0.0;
+        let lastTime = performance.now();
+        let speed = 1;
+        let paused = true;
+        let timerInterval;
 
-        function updateTime() {
-            let timePerPerson = totalTime / peopleCount;
-            document.getElementById('time-display').innerText = `Remaining Time: ${timePerPerson.toFixed(2)} seconds per person`;
-        }
+        function updateTimer() {
+            const now = performance.now();
+            const elapsed = (now - lastTime) / 1000.0; // in Sekunden
+            lastTime = now;
 
-        function addPerson() {
-            peopleCount++;
-            document.getElementById('people-count').innerText = peopleCount;
-            updateTime();
-        }
+            if (!paused) {
+                accumulatedTime += elapsed * speed;
+                remainingTime = duration - accumulatedTime;
 
-        function removePerson() {
-            if (peopleCount > 1) {
-                peopleCount--;
-                document.getElementById('people-count').innerText = peopleCount;
-                updateTime();
+                if (remainingTime <= 0) {
+                    resetTimer();
+                    document.getElementById("timer").innerText = "Zeit abgelaufen! Timer pausiert.";
+                } else {
+                    document.getElementById("timer").innerText = `${remainingTime.toFixed(2)} Sekunden`;
+                }
             }
         }
 
-        updateTime();</script>
+        function pauseTimer() {
+            paused = true;
+        }
+
+        function resumeTimer() {
+            if (speed > 0) {
+                paused = false;
+                lastTime = performance.now();
+            }
+        }
+
+        function resetTimer() {
+            paused = true;
+            accumulatedTime = 0.0;
+            remainingTime = duration;
+            document.getElementById("timer").innerText = `${duration.toFixed(2)} Sekunden`;
+        }
+
+        function changeSpeed(newSpeed) {
+            speed = parseInt(newSpeed, 10);
+            if (speed === 0) {
+                pauseTimer();
+            } else if (paused) {
+                resumeTimer();
+            }
+        }
+
+        document.addEventListener("keydown", (event) => {
+            switch (event.key.toLowerCase()) {
+                case 'p':
+                    pauseTimer();
+                    break;
+                case 'f':
+                    resumeTimer();
+                    break;
+                case 'r':
+                    resetTimer();
+                    break;
+                default:
+                    if (event.key >= '0' && event.key <= '6') {
+                        changeSpeed(event.key);
+                    }
+                    break;
+            }
+        });
+
+        // Start the timer update loop
+        timerInterval = setInterval(updateTimer, 10);
+    </script>
 </body>
 </html>
