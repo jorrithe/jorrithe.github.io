@@ -1,0 +1,58 @@
+﻿<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Timer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        #time-display {
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 1em;
+            margin: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <h1 id="time-display">Remaining Time: 60 seconds</h1>
+        <button onclick="addPerson()">Add Person</button>
+        <button onclick="removePerson()">Remove Person</button>
+        <p>Number of People: <span id="people-count">1</span></p>
+    </div>
+
+    <script>let totalTime = 60; // Total time in seconds
+        let peopleCount = 1;
+
+        function updateTime() {
+            let timePerPerson = totalTime / peopleCount;
+            document.getElementById('time-display').innerText = `Remaining Time: ${timePerPerson.toFixed(2)} seconds per person`;
+        }
+
+        function addPerson() {
+            peopleCount++;
+            document.getElementById('people-count').innerText = peopleCount;
+            updateTime();
+        }
+
+        function removePerson() {
+            if (peopleCount > 1) {
+                peopleCount--;
+                document.getElementById('people-count').innerText = peopleCount;
+                updateTime();
+            }
+        }
+
+        updateTime();</script>
+</body>
+</html>
