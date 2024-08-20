@@ -58,23 +58,23 @@
     </style>
 </head>
 <body>
-    <input id="durationInput" type="number" min="1" step="0.1" value="10.0"> Sekunden
-    <div id="timer">10.00 Sekunden</div>
+    <input id="durationInput" type="number" min="1" step="1" value="600.0"> Sekunden
+    <div id="timer">600.00 Sekunden</div>
     <div id="controls">
         <div>
-            <button onclick="pauseTimer()">Pause (P)</button>
-            <button onclick="resumeTimer()">Fortsetzen (F)</button>
-            <button onclick="resetTimer()">Zurücksetzen (R)</button>
+            <button onclick="pauseTimer()">Pause</button>
+            <button onclick="resumeTimer()">Starten</button>
+            <button onclick="resetTimer()">Zurücksetzen</button>
         </div>
         <div>
             Geschwindigkeit:
             <button id="speed0" onclick="changeSpeed(0)">0</button>
-            <button id="speed1" onclick="changeSpeed(1)" class="active">1</button>
+            <button id="speed1" onclick="changeSpeed(1)">1</button>
             <button id="speed2" onclick="changeSpeed(2)">2</button>
             <button id="speed3" onclick="changeSpeed(3)">3</button>
             <button id="speed4" onclick="changeSpeed(4)">4</button>
             <button id="speed5" onclick="changeSpeed(5)">5</button>
-            <button id="speed6" onclick="changeSpeed(6)">6</button>
+            <button id="speed6" onclick="changeSpeed(6)"class="active">6</button>
         </div>
     </div>
 
@@ -83,7 +83,7 @@
         let remainingTime = duration;
         let accumulatedTime = 0.0;
         let lastTime = performance.now();
-        let speed = 1;
+        let speed = 6;
         let paused = true;
         let timerInterval;
 
