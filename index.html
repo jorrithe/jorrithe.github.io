@@ -34,10 +34,18 @@
             padding: 10px 20px;
             font-size: 18px;
             cursor: pointer;
+            background-color: #444;
+            color: white;
+            border: none;
+            border-radius: 5px;
         }
 
         button:focus {
             outline: none;
+        }
+
+        .active {
+            background-color: #ff4444;
         }
 
         input {
@@ -60,13 +68,13 @@
         </div>
         <div>
             Geschwindigkeit:
-            <button onclick="changeSpeed(0)">0</button>
-            <button onclick="changeSpeed(1)">1</button>
-            <button onclick="changeSpeed(2)">2</button>
-            <button onclick="changeSpeed(3)">3</button>
-            <button onclick="changeSpeed(4)">4</button>
-            <button onclick="changeSpeed(5)">5</button>
-            <button onclick="changeSpeed(6)">6</button>
+            <button id="speed0" onclick="changeSpeed(0)">0</button>
+            <button id="speed1" onclick="changeSpeed(1)" class="active">1</button>
+            <button id="speed2" onclick="changeSpeed(2)">2</button>
+            <button id="speed3" onclick="changeSpeed(3)">3</button>
+            <button id="speed4" onclick="changeSpeed(4)">4</button>
+            <button id="speed5" onclick="changeSpeed(5)">5</button>
+            <button id="speed6" onclick="changeSpeed(6)">6</button>
         </div>
     </div>
 
@@ -95,7 +103,7 @@
 
                 if (remainingTime <= 0) {
                     resetTimer();
-                    document.getElementById("timer").innerText = "Zeit abgelaufen!";
+                    document.getElementById("timer").innerText = "Zeit abgelaufen! Timer pausiert.";
                 } else {
                     document.getElementById("timer").innerText = `${remainingTime.toFixed(2)} Sekunden`;
                 }
@@ -127,7 +135,18 @@
             } else if (paused) {
                 resumeTimer();
             }
-            alert(`Geschwindigkeit auf ${speed} gesetzt.`);
+            updateSpeedButtons();
+        }
+
+        function updateSpeedButtons() {
+            for (let i = 0; i <= 6; i++) {
+                const button = document.getElementById(`speed${i}`);
+                if (i === speed) {
+                    button.classList.add("active");
+                } else {
+                    button.classList.remove("active");
+                }
+            }
         }
 
         document.addEventListener("keydown", (event) => {
